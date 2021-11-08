@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Grid,Form,Segment,Button,Header,Message,Icon } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
-import {getAuth,createUserWithEmailAndPassword} from "../../firebase"
+import {getAuth,createUserWithEmailAndPassword,updateProfile,getDatabase, ref, set } from "../../firebase"
 
 
 export default class Register extends Component {
@@ -41,14 +41,28 @@ export default class Register extends Component {
             this.setState({loader: true})
             createUserWithEmailAndPassword(getAuth(), this.state.email, this.state.password)
             .then((userCredential)=>{
-                this.setState({username: ""})
-                this.setState({email: ""})
-                this.setState({password: ""})
-                this.setState({confirmPassword: ""})
-                this.setState({errorMsg: ""})
-                this.setState({successMsg: "Account Created Successfully"})
-                this.setState({loader: false})
-                
+                console.log(userCredential.user.uid)
+
+                updateProfile(getAuth().currentUser,{
+                    displayName: this.state.username
+                }).then(()=>{
+                    this.writeUserData(userCredential)
+                })
+                .then(()=>{
+                    this.setState({username: ""})
+                    this.setState({email: ""})
+                    this.setState({password: ""})
+                    this.setState({confirmPassword: ""})
+                    this.setState({errorMsg: ""})
+                    this.setState({successMsg: "Account Created Successfully"})
+                    this.setState({loader: false})
+                }).catch((error)=>{
+                    this.setState({loader: false})
+                    const errorCode = error.code;
+                    if(errorCode){
+                        this.setState({errorMsg: "User name Not Valid"})
+                    }
+                })
                 
             }).catch((error)=>{
                 this.setState({loader: false})
@@ -60,6 +74,14 @@ export default class Register extends Component {
         }
 
     }
+
+
+writeUserData = (user) => {
+        const db = getDatabase();
+        set(ref(db, 'users/' + user.user.uid), {
+          username: this.state.username,
+        });
+      }
 
 
     render() {
