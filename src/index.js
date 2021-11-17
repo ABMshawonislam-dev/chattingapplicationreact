@@ -7,21 +7,34 @@ import {BrowserRouter as Router,Routes,Route,Navigate} from "react-router-dom";
 import { getAuth } from './firebase';
 import 'semantic-ui-css/semantic.min.css'
 
+import { setuser } from './actions';
+import {createStore} from 'redux'
+import {Provider,connect} from 'react-redux'
+import { composeWithDevTools } from 'redux-devtools-extension';
+
+import rootReducer from './reducers';
+const store = createStore(rootReducer,composeWithDevTools())
 
 
 class Routing extends Component{
   state={
     tracker: false
   }
+  
   componentDidMount(){
     getAuth().onAuthStateChanged((user)=>{
       if(user){
+        console.log(setuser(user))
+        
         this.setState({tracker: true})
       }else{
         this.setState({tracker: false})
       }
+     
     })
+    
   }
+  
   render(){
     return(
       <Router>
@@ -47,4 +60,6 @@ class Routing extends Component{
   }
 }
 
-ReactDOM.render(<Routing />,document.getElementById('root'));
+connect(null, { setuser })(Routing)
+
+ReactDOM.render(<Provider store={store}><Routing /></Provider>,document.getElementById('root'));
