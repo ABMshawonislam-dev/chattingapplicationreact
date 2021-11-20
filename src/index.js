@@ -6,10 +6,8 @@ import Login from './components/Auth/Login';
 import {BrowserRouter as Router,Routes,Route,Navigate} from "react-router-dom";
 import { getAuth } from './firebase';
 import 'semantic-ui-css/semantic.min.css'
-
-import { setuser } from './actions';
 import {createStore} from 'redux'
-import {Provider,connect} from 'react-redux'
+import {Provider} from 'react-redux'
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import rootReducer from './reducers';
@@ -24,8 +22,6 @@ class Routing extends Component{
   componentDidMount(){
     getAuth().onAuthStateChanged((user)=>{
       if(user){
-        console.log(setuser(user))
-        
         this.setState({tracker: true})
       }else{
         this.setState({tracker: false})
@@ -43,16 +39,13 @@ class Routing extends Component{
             <Route path="/" element={<App />}></Route>
             <Route path="/register" element={<Navigate to="/" />}></Route>
             <Route path="/login" element={<Navigate to="/" />}></Route>
-        </Routes>
-          
-        
+          </Routes>
         :
           <Routes>
             <Route path="/" element={<App />}></Route>
             <Route path="/register" element={<Register />}></Route>
             <Route path="/login" element={<Login />}></Route>
-        </Routes>
-        
+          </Routes>
         }
       
     </Router>
@@ -60,6 +53,5 @@ class Routing extends Component{
   }
 }
 
-connect(null, { setuser })(Routing)
 
 ReactDOM.render(<Provider store={store}><Routing /></Provider>,document.getElementById('root'));

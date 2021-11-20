@@ -6,6 +6,7 @@ const initialstate = {
     isLoading: true
 }
 
+
 const  user_reducer = (state = initialstate,action) =>{
     switch(action.type){
         case actiontype.SET_USER:
@@ -17,6 +18,8 @@ const  user_reducer = (state = initialstate,action) =>{
             return state
     }
 }
+
+currentUser + 1
 
 
 const rootReducer = combineReducers({
