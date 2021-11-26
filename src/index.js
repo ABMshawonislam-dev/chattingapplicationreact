@@ -42,7 +42,7 @@ class Routing extends Component{
           </Routes>
         :
           <Routes>
-            <Route path="/" element={<App />}></Route>
+            <Route path="/" element={<Navigate to="/login" />}></Route>
             <Route path="/register" element={<Register />}></Route>
             <Route path="/login" element={<Login />}></Route>
           </Routes>

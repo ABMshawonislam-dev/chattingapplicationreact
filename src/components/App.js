@@ -2,7 +2,13 @@ import { Component } from "react";
 import { getAuth } from '../firebase';
 import {connect} from 'react-redux'
 import {setuser} from '../actions'
-import { Dimmer, Loader, Segment } from 'semantic-ui-react'
+import { Dimmer, Loader, Segment,Grid } from 'semantic-ui-react'
+
+import ColorPanel from "./ColorPanel/ColorPanel";
+import SidePanel from "./SidePanel/SidePanel";
+import Message from "./Message/Message";
+import MetaPanel from "./MetaPanel/MetaPanel";
+
 class App extends Component{
   componentDidMount(){
     getAuth().onAuthStateChanged((user)=>{
@@ -25,7 +31,26 @@ class App extends Component{
     :
     (
     <>
-    <h1>React</h1>
+      <Grid colums="equal" className="app">
+      <Grid.Column width={2}>
+        <ColorPanel></ColorPanel>
+
+      </Grid.Column>
+
+      <Grid.Column>
+        <SidePanel></SidePanel>
+
+      </Grid.Column>
+
+        <Grid.Column width={4}  style={{marginLeft: 400}}>
+          <Message></Message>
+        </Grid.Column>
+
+        <Grid.Column width={4}>
+          <MetaPanel></MetaPanel>
+        </Grid.Column>
+      
+      </Grid>
     </>
    );
 

@@ -19,7 +19,6 @@ const  user_reducer = (state = initialstate,action) =>{
     }
 }
 
-currentUser + 1
 
 
 const rootReducer = combineReducers({
