@@ -1,7 +1,7 @@
 import { Component } from "react";
 import { getAuth } from '../firebase';
 import {connect} from 'react-redux'
-import {setuser} from '../actions'
+import {setuser,clearuser} from '../actions'
 import { Dimmer, Loader, Segment,Grid } from 'semantic-ui-react'
 
 import ColorPanel from "./ColorPanel/ColorPanel";
@@ -10,16 +10,20 @@ import Message from "./Message/Message";
 import MetaPanel from "./MetaPanel/MetaPanel";
 
 class App extends Component{
+
   componentDidMount(){
     getAuth().onAuthStateChanged((user)=>{
       if(user){
         this.props.setuser(user)
+      }else{
+        this.props.clearuser()
       }
      
     })
     
   }
  render(){
+
   return this.props.isLoading ? 
   (
     <Segment style={{height: "100vh"}}>
@@ -38,7 +42,7 @@ class App extends Component{
       </Grid.Column>
 
       <Grid.Column>
-        <SidePanel></SidePanel>
+        <SidePanel userName={this.props.userName.displayName}></SidePanel>
 
       </Grid.Column>
 
@@ -58,7 +62,8 @@ class App extends Component{
 }
 
 const mapStateToProps = (state)=>({
-  isLoading: state.user.isLoading
+  isLoading: state.user.isLoading,
+  userName: state.user.currentUser
 })
 
-export default connect(mapStateToProps, { setuser })(App);
+export default connect(mapStateToProps, { setuser,clearuser })(App);

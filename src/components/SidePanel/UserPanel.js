@@ -5,7 +5,7 @@ import { Dropdown } from 'semantic-ui-react'
 export default class UserPanel extends Component {
     dropOptions = () => [
         {
-            text: <span>Shawon</span>,
+            text: <span>Loged As {this.props.userName}</span>,
             disabled: true
         },
         {
@@ -25,6 +25,7 @@ export default class UserPanel extends Component {
         });
     }
     render() {
+       
         return (
             <Grid>
                 <Grid.Column>
@@ -33,7 +34,7 @@ export default class UserPanel extends Component {
                     </Grid.Row>
                     <Header style={{fontSize:"16px",color:"#fff",marginLeft:"20px",marginTop:"20px"}} as="h4">
                         <Dropdown trigger={
-                            <span >User</span>
+                            <span >{this.props.userName}</span>
                         } options={this.dropOptions()}></Dropdown>
                     </Header>
                 </Grid.Column>

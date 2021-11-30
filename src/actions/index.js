@@ -8,3 +8,9 @@ export const setuser = (user)=>{
         }
     }
 }
+
+export const clearuser = () =>{
+    return{
+        type: actiontype.CLEAR_USER
+    }
+}
