@@ -24,10 +24,27 @@ const  user_reducer = (state = initialstate,action) =>{
     }
 }
 
+const initialstategroup = {
+    currentGroup: null,
+}
+
+const group_reducer = (state=initialstategroup,action)=>{
+    switch(action.type){
+        case actiontype.SET_CURRENT_GROUP:
+            return{
+                ...state,
+                currentGroup: action.payload.currentgroup
+            }
+        default:
+            return state
+    }
+}
+
 
 
 const rootReducer = combineReducers({
-    user: user_reducer
+    user: user_reducer,
+    group: group_reducer
 })
 
 export default rootReducer;

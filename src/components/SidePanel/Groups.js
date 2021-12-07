@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { setcurrentgroup } from '../../actions'
 import { Header,Icon,Modal,Button,Form,Message,Menu } from 'semantic-ui-react'
 import {getDatabase, ref, set,push,onValue } from "../../firebase"
 
-export default class Groups extends Component {
+
+ class Groups extends Component {
     state={
         groups: [],
         modal: false,
@@ -63,11 +66,23 @@ export default class Groups extends Component {
         const groupRef = ref(db, 'groups');
         onValue(groupRef, (snapshot) => {
                 snapshot.forEach(item=>{
-                    console.log()
-                    groupsafterload.push(item.val())
+                    console.log(item.key)
+                    let groupdata = {
+                        id: item.key,
+                        groupname: item.val().groupname,
+                        grouptagline: item.val().grouptagline,
+                        createdby: item.val().createdby
+
+                    }
+                    groupsafterload.push(groupdata)
                 })
+                
                 this.setState({groups:groupsafterload})
         });
+    }
+
+    groupChange = (group)=>{
+        this.props.setcurrentgroup(group)
     }
 
     render() {
@@ -83,7 +98,7 @@ export default class Groups extends Component {
                      <Menu text vertical style={{color:"#fff",marginTop: 30,marginLeft:20}}>
                          {this.state.groups.map((item)=>(
                             
-                             <Menu.Item style={{color:"#fff",fontSize:"16px"}}>{item.groupname}</Menu.Item>
+                             <Menu.Item onClick={()=>this.groupChange(item)} style={{color:"#fff",fontSize:"16px"}}>{item.groupname}</Menu.Item>
                       
 
                          ))}
@@ -127,3 +142,6 @@ export default class Groups extends Component {
         )
     }
 }
+
+
+export default connect(null,{setcurrentgroup})(Groups)
