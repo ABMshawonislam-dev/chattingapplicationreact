@@ -78,6 +78,7 @@ export default class Register extends Component {
 
 writeUserData = (user) => {
         const db = getDatabase();
+        
         set(ref(db, 'users/' + user.user.uid), {
           username: this.state.username,
         });

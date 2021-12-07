@@ -7,7 +7,7 @@ export default class SidePanel extends Component {
         return (
             <Menu size="large" fixed="left" vertical style={{background: "#5353C2"}}>
                 <UserPanel userName={this.props.userName}></UserPanel>
-                <Groups/>
+                <Groups userName={this.props.userName}/>
             </Menu>
         )
     }
