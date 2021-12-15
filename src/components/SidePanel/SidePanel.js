@@ -5,7 +5,7 @@ import Groups from './Groups'
 export default class SidePanel extends Component {
     render() {
         return (
-            <Menu size="large" fixed="left" vertical style={{background: "#5353C2"}}>
+            <Menu size="large"  vertical style={{background: "#5353C2",height:"100vh"}}>
                 <UserPanel userName={this.props.userName}></UserPanel>
                 <Groups userName={this.props.userName}/>
             </Menu>

@@ -10,6 +10,9 @@ import Message from "./Message/Message";
 import MetaPanel from "./MetaPanel/MetaPanel";
 
 class App extends Component{
+  state={
+    userid: ""
+  }
 
   componentDidMount(){
     getAuth().onAuthStateChanged((user)=>{
@@ -22,8 +25,8 @@ class App extends Component{
     })
     
   }
- render(){
-
+  render(){
+    
   return this.props.isLoading ? 
   (
     <Segment style={{height: "100vh"}}>
@@ -36,21 +39,21 @@ class App extends Component{
     (
     <>
       <Grid colums="equal" className="app">
-      <Grid.Column width={2}>
+      <Grid.Column style={{width:"4%"}}>
         <ColorPanel></ColorPanel>
 
       </Grid.Column>
 
-      <Grid.Column>
+      <Grid.Column style={{width:"20%"}}>
         <SidePanel userName={this.props.userName.displayName}></SidePanel>
 
       </Grid.Column>
 
-        <Grid.Column width={4}  style={{marginLeft: 400}}>
-          <Message></Message>
+        <Grid.Column style={{width:"40%"}}>
+          <Message userId={this.props.userName} groupId={this.props.groupId}></Message>
         </Grid.Column>
 
-        <Grid.Column width={4}>
+        <Grid.Column style={{width:"36%"}}>
           <MetaPanel></MetaPanel>
         </Grid.Column>
       
@@ -63,7 +66,8 @@ class App extends Component{
 
 const mapStateToProps = (state)=>({
   isLoading: state.user.isLoading,
-  userName: state.user.currentUser
+  userName: state.user.currentUser,
+  groupId : state.group.currentGroup
 })
 
 export default connect(mapStateToProps, { setuser,clearuser })(App);

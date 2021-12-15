@@ -11,7 +11,9 @@ import {getDatabase, ref, set,push,onValue } from "../../firebase"
         modal: false,
         groupname: "",
         grouptagline: "",
-        err: ""
+        err: "",
+        firstload: true,
+        active: ""
     }
 
     openModal = ()=>{
@@ -66,7 +68,6 @@ import {getDatabase, ref, set,push,onValue } from "../../firebase"
         const groupRef = ref(db, 'groups');
         onValue(groupRef, (snapshot) => {
                 snapshot.forEach(item=>{
-                    console.log(item.key)
                     let groupdata = {
                         id: item.key,
                         groupname: item.val().groupname,
@@ -77,11 +78,24 @@ import {getDatabase, ref, set,push,onValue } from "../../firebase"
                     groupsafterload.push(groupdata)
                 })
                 
-                this.setState({groups:groupsafterload})
+                this.setState({groups:groupsafterload},this.addgrouponload)
+
+                
         });
     }
 
+    addgrouponload = ()=>{
+        let firstgroup = this.state.groups[0]
+        if(this.state.firstload && this.state.groups.length > 0){
+            this.props.setcurrentgroup(firstgroup)
+            this.setState({active:firstgroup.id})
+        }
+
+        this.setState({firstload:false})
+    }
+
     groupChange = (group)=>{
+        this.setState({active: group.id})
         this.props.setcurrentgroup(group)
     }
 
@@ -98,7 +112,7 @@ import {getDatabase, ref, set,push,onValue } from "../../firebase"
                      <Menu text vertical style={{color:"#fff",marginTop: 30,marginLeft:20}}>
                          {this.state.groups.map((item)=>(
                             
-                             <Menu.Item onClick={()=>this.groupChange(item)} style={{color:"#fff",fontSize:"16px"}}>{item.groupname}</Menu.Item>
+                             <Menu.Item style={item.id == this.state.active ?menulistactive:menulist} onClick={()=>this.groupChange(item)}>{item.groupname}</Menu.Item>
                       
 
                          ))}
@@ -141,6 +155,17 @@ import {getDatabase, ref, set,push,onValue } from "../../firebase"
             </>
         )
     }
+}
+
+let menulist = {
+    color:"#fff",
+    fontSize: "16px"
+}
+let menulistactive = {
+    color:"#000",
+    fontSize: "20px",
+    background: "#fff",
+    padding: "10px"
 }
 
 
