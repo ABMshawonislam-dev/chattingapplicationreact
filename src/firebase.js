@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword,updateProfile,signInWithEmailAndPassword,signOut } from "firebase/auth";
-import { getDatabase, ref, push, set,onValue,child, get } from "firebase/database";
+import { getDatabase, ref, push, set,onValue,child, get,onChildAdded,onChildChanged } from "firebase/database";
 
 
 const firebaseConfig = {
@@ -13,4 +13,4 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 
-export{getAuth, createUserWithEmailAndPassword,updateProfile,getDatabase, ref, set,signInWithEmailAndPassword,signOut,push,onValue,child, get }
+export{getAuth, createUserWithEmailAndPassword,updateProfile,getDatabase, ref, set,signInWithEmailAndPassword,signOut,push,onValue,child, get,onChildAdded,onChildChanged }

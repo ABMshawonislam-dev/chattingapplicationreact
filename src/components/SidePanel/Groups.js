@@ -45,6 +45,8 @@ import {getDatabase, ref, set,push,onValue } from "../../firebase"
                 this.setState({gerr: ""})
             })
 
+          
+
 
            
         }else{
@@ -76,12 +78,14 @@ import {getDatabase, ref, set,push,onValue } from "../../firebase"
 
                     }
                     groupsafterload.push(groupdata)
+                    
                 })
                 
-                this.setState({groups:groupsafterload},this.addgrouponload)
 
                 
-        });
+                this.setState({groups:groupsafterload},this.addgrouponload)
+            })
+       
     }
 
     addgrouponload = ()=>{

@@ -12,6 +12,7 @@ export default class MessageForm extends Component {
     }
 
     handleMsgSubmit = ()=>{
+        
         if (this.state.msg){
 
             const db = getDatabase();
@@ -19,7 +20,8 @@ export default class MessageForm extends Component {
                 const newGroup = push(child(groupRef, `${this.props.groupId.id}/${this.props.userId.uid}`));
                 set(newGroup, {
                     msg: this.state.msg,
-                    date: Date()
+                    date: Date(),
+                    sender: this.props.userId.uid
             }).then(()=>{
                 console.log("msg gece databas e")
             })
