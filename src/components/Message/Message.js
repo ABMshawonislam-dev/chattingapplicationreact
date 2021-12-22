@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Segment,Comment } from 'semantic-ui-react'
 import MessageHeader from './MessageHeader'
 import MessageForm from './MessageForm'
-
+import moment from 'moment'
 import { getDatabase, ref, onChildAdded, onChildChanged, onChildRemoved } from "../../firebase";
 
 export default class Message extends Component {
@@ -12,7 +12,7 @@ export default class Message extends Component {
     componentDidUpdate(previousProps){
         let msgarr=[]
         const db = getDatabase();
-        const commentsRef = ref(db, 'messages/' + this.props.groupId.id);
+        const commentsRef = ref(db, 'messages/');
         onChildAdded(commentsRef, (data) => {
             data.forEach(item=>{
                 msgarr.push(item.val())
@@ -65,11 +65,30 @@ export default class Message extends Component {
                 </Segment>
                 <Segment style={{height:"500px",overflowY:"scroll"}}>
                     <Comment.Group>
+                       
                         {this.state.groupmsg.map((item)=>(
-                           <>
-                            <span>{item.date}</span>
-                            <h1 style={this.props.userId.uid==item.sender?center:left}>{item.msg}</h1>
-                           </>
+                           
+                           item.group == this.props.groupId.id?
+                           <Comment style={this.props.userId.uid==item.sender?center:left}>
+                                <Comment.Content>
+                                    <Comment.Author as='a'>{item.username}</Comment.Author>
+                                    <Comment.Metadata>
+                                    <div>{moment(item.date).fromNow()}</div>
+                                    </Comment.Metadata>
+                                    <Comment.Text>{item.msg}</Comment.Text>
+                                    <Comment.Actions>
+                                    </Comment.Actions>
+                                </Comment.Content>
+                             </Comment>
+
+                        //    <>
+                        //     <span>{moment(item.date).fromNow()}</span>
+                        //     <h1 style={this.props.userId.uid==item.sender?center:left}>{item.msg}</h1>
+                        //    </>
+                            :
+                            ""
+                     
+
                             
                         ))}
                     </Comment.Group>
@@ -86,8 +105,10 @@ export default class Message extends Component {
 }
 
 const center = {
-    textAlign: "right"
+    display: "flex",
+    justifyContent: "flex-end",
 }
 const left = {
-    textAlign: "left"
+    display: "flex",
+    justifyContent: "flex-start",
 }
