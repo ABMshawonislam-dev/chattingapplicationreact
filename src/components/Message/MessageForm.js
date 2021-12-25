@@ -1,11 +1,19 @@
 import React, { Component } from 'react'
 import { Input,Button,Message } from 'semantic-ui-react'
 import {getDatabase, ref, set,push,onValue,child } from "../../firebase"
-// import Emoji from './Emoji'
+import ImageMdal from './ImageMdal'
 export default class MessageForm extends Component {
     state={
         msg: "",
-        err: ""
+        err: "",
+        modal: false,
+    }
+
+    openModal = ()=>{
+        this.setState({modal: true})
+    }
+    closeModal = ()=>{
+        this.setState({modal: false})
     }
 
 
@@ -51,9 +59,9 @@ export default class MessageForm extends Component {
                 :
                 ""
             }
-            {/* <Emoji /> */}
                 <Button onClick={this.handleMsgSubmit} style={{width:"49%"}} primary>Add Message</Button>
-                <Button style={{width:"49%"}} secondary>Add Media</Button>
+                <Button onClick={this.openModal} style={{width:"49%"}} secondary>Add Media</Button>
+                <ImageMdal userid={this.props.userId} groupid={this.props.groupId} modal={this.state.modal} close={this.closeModal}/>
             </div>
         )
     }

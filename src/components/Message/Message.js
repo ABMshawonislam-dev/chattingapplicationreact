@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Segment,Comment } from 'semantic-ui-react'
+import 'reactjs-popup/dist/index.css';
+import { Segment,Comment,Image } from 'semantic-ui-react'
 import MessageHeader from './MessageHeader'
 import MessageForm from './MessageForm'
 import moment from 'moment'
@@ -7,7 +8,9 @@ import { getDatabase, ref, onChildAdded, onChildChanged, onChildRemoved } from "
 
 export default class Message extends Component {
    state={
-       groupmsg:[]
+       groupmsg:[],
+       groupfiles:[]
+    
    }
     componentDidUpdate(previousProps){
         let msgarr=[]
@@ -37,7 +40,6 @@ export default class Message extends Component {
             if(previousProps.groupId){
                 if(previousProps.groupId.groupname !== this.props.groupId.groupname){
                     this.setState({groupmsg:msgarr})
-                    console.log(this.state.groupmsg)
                 }
                
             }else{
@@ -46,6 +48,42 @@ export default class Message extends Component {
             }
     
         });
+
+        // =====================================
+        let filearr=[]
+        const filesRef = ref(db, 'files/');
+        onChildAdded(filesRef, (data) => {
+            data.forEach(item=>{
+                filearr.push(item.val())
+            })
+            if(previousProps.groupId){
+                if(previousProps.groupId.groupname !== this.props.groupId.groupname){
+                    this.setState({groupfiles:filearr})
+                }
+               
+            }else{
+                this.setState({groupfiles:filearr})
+            }
+    
+        });
+        onChildChanged(filesRef, (data) => {
+            filearr =[]
+            data.forEach(item=>{
+                filearr.push(item.val())
+            })
+            if(previousProps.groupId){
+                if(previousProps.groupId.groupname !== this.props.groupId.groupname){
+                    this.setState({groupfiles:filearr})
+                }
+               
+            }else{
+                this.setState({groupfiles:filearr})
+                
+            }
+    
+        });
+
+     
 
         
 
@@ -81,16 +119,35 @@ export default class Message extends Component {
                                 </Comment.Content>
                              </Comment>
 
-                        //    <>
-                        //     <span>{moment(item.date).fromNow()}</span>
-                        //     <h1 style={this.props.userId.uid==item.sender?center:left}>{item.msg}</h1>
-                        //    </>
+                       
                             :
                             ""
                      
 
                             
                         ))}
+
+                        {this.state.groupfiles.map((item)=>(
+                           
+                           item.group == this.props.groupId.id?
+                           <Comment style={this.props.userId.uid==item.sender?center:left}>
+                                <Comment.Content>
+                                    <Comment.Author as='a'>{item.username}</Comment.Author>
+                                    <Comment.Metadata>
+                                    <div>{moment(item.date).fromNow()}</div>
+                                    </Comment.Metadata>
+                                    <Image src={item.fileurl} size='small' />
+                                </Comment.Content>
+                             </Comment>
+
+                       
+                            :
+                            ""
+                     
+
+                            
+                        ))}
+
                     </Comment.Group>
 
                     
