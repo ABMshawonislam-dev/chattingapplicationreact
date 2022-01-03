@@ -9,7 +9,10 @@ import { getDatabase, ref, onChildAdded, onChildChanged, onChildRemoved } from "
 export default class Message extends Component {
    state={
        groupmsg:[],
-       groupfiles:[]
+       groupfiles:[],
+       searchterm: "",
+       searchloading: "",
+       searchresult: []
     
    }
     componentDidUpdate(previousProps){
@@ -91,6 +94,25 @@ export default class Message extends Component {
         
     }
 
+    handleSearchChange = (e)=>{
+        this.setState({searchterm: e.target.value,searchloading:true},()=> this.handleSearchMessage())
+    }
+
+
+    handleSearchMessage = ()=>{
+        let groupmsg = [...this.state.groupmsg]
+        let regex = new RegExp (this.state.searchterm,'gi')
+        let searchresult = groupmsg.reduce((initvalue,message)=>{
+            if(message.msg && message.msg.match(regex)){
+                initvalue.push(message)
+            }
+
+            return initvalue
+        },[]) 
+        this.setState({searchresult:searchresult})
+        console.log(this.state.searchterm)
+
+    }
     
    
     render() {
@@ -99,33 +121,58 @@ export default class Message extends Component {
             <div>
                 <Segment>
 
-                <MessageHeader/>
+                <MessageHeader handleSearchChange={this.handleSearchChange}/>
                 </Segment>
                 <Segment style={{height:"500px",overflowY:"scroll"}}>
                     <Comment.Group>
                        
-                        {this.state.groupmsg.map((item)=>(
+                        {this.state.searchterm ? 
+                          this.state.searchresult.map((item)=>(
                            
-                           item.group == this.props.groupId.id?
-                           <Comment style={this.props.userId.uid==item.sender?center:left}>
-                                <Comment.Content>
-                                    <Comment.Author as='a'>{item.username}</Comment.Author>
-                                    <Comment.Metadata>
-                                    <div>{moment(item.date).fromNow()}</div>
-                                    </Comment.Metadata>
-                                    <Comment.Text>{item.msg}</Comment.Text>
-                                    <Comment.Actions>
-                                    </Comment.Actions>
-                                </Comment.Content>
-                             </Comment>
-
-                       
-                            :
-                            ""
-                     
-
-                            
-                        ))}
+                            item.group == this.props.groupId.id?
+                            <Comment style={this.props.userId.uid==item.sender?center:left}>
+                                 <Comment.Content>
+                                 <Comment.Author as='a'>{item.username}</Comment.Author>
+                                     <Comment.Metadata>
+                                     <div>{moment(item.date).fromNow()}</div>
+                                     </Comment.Metadata>
+                                     <Comment.Text>{item.msg}</Comment.Text>
+                                     <Comment.Actions>
+                                     </Comment.Actions>
+                                 </Comment.Content>
+                              </Comment>
+ 
+                        
+                             :
+                             ""
+                      
+ 
+                             
+                         ))
+                        :
+                        this.state.groupmsg.map((item)=>(
+                           
+                            item.group == this.props.groupId.id?
+                            <Comment style={this.props.userId.uid==item.sender?center:left}>
+                                 <Comment.Content>
+                                     <Comment.Author as='a'>{item.username}</Comment.Author>
+                                     <Comment.Metadata>
+                                     <div>{moment(item.date).fromNow()}</div>
+                                     </Comment.Metadata>
+                                     <Comment.Text>{item.msg}</Comment.Text>
+                                     <Comment.Actions>
+                                     </Comment.Actions>
+                                 </Comment.Content>
+                              </Comment>
+ 
+                        
+                             :
+                             ""
+                      
+ 
+                             
+                         ))
+                         }
 
                         {this.state.groupfiles.map((item)=>(
                            

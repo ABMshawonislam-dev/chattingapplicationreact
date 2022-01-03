@@ -10,7 +10,7 @@ export default class MessageHeader extends Component {
                             <Icon name="star outline" color='black'/>
                             <Header as="h5">5 Users</Header>
                         </Header>
-                        <div><Input size="mini" icon="search" name="searchmessage" placeholder="search message"/></div>
+                        <div><Input onChange={this.props.handleSearchChange} size="mini" icon="search" name="searchmessage" placeholder="search message"/></div>
                         </div>
 
                 
