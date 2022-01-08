@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword,updateProfile,signInWithEmailAndPassword,signOut } from "firebase/auth";
-import { getDatabase, ref, push, set,onValue,child, get,onChildAdded,onChildChanged } from "firebase/database";
+import { getDatabase, ref, push, set,onValue,child, get,onChildAdded,onChildChanged,onDisconnect,onChildRemoved } from "firebase/database";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
@@ -14,4 +14,4 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
 
-export{getAuth, createUserWithEmailAndPassword,updateProfile,getDatabase, ref, set,signInWithEmailAndPassword,signOut,push,onValue,child, get,onChildAdded,onChildChanged,storage }
+export{getAuth, createUserWithEmailAndPassword,updateProfile,getDatabase, ref, set,signInWithEmailAndPassword,signOut,push,onValue,child, get,onChildAdded,onChildChanged,storage,onDisconnect,onChildRemoved }

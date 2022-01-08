@@ -45,7 +45,7 @@ class App extends Component{
       </Grid.Column>
 
       <Grid.Column style={{width:"20%"}}>
-        <SidePanel userName={this.props.userName.displayName}></SidePanel>
+        <SidePanel userName={this.props.userName.displayName} user={this.props.userName}></SidePanel>
 
       </Grid.Column>
 
